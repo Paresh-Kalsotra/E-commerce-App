@@ -33,6 +33,7 @@ const CartItemCard = ({ product }) => {
       <div style={{ width: "300px" }}>{product.title}</div>
 
       <div style={{ display: "inline-flex", alignItems: "center" }}>
+        <p>Quantity: </p>
         <button onClick={minusHandler} style={{ padding: "6px 10px" }}>
           <FaMinus />
         </button>

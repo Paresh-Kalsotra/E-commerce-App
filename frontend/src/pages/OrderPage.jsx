@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getOrders } from "../features/order/orderSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import OrderListItem from "../components/OrderListItem";
 
 const OrderPage = () => {
-  const [orders, setOrders] = useState([]);
+  // const userOrders = useSelector((state) => state.order.userOrders);
+  const [userOrders, setUserOrders] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -12,10 +14,9 @@ const OrderPage = () => {
 
   async function fetchOrders() {
     const { payload } = await dispatch(getOrders());
-    setOrders(payload.message);
+    setUserOrders(payload);
   }
 
-  console.log(orders);
   return (
     <div style={{ border: "1px solid #378eeb", margin: "4% 8%" }}>
       <h3
@@ -24,15 +25,16 @@ const OrderPage = () => {
           color: "#f0f0f0",
           textAlign: "center",
           padding: "10px",
+          marginTop: "0",
         }}
       >
         Your Orders
       </h3>
       <div className="orderList">
-        {orders && orders.length > 0 ? (
+        {userOrders && userOrders.length > 0 ? (
           <div>
-            {orders.map((item) => (
-              <orderListItem key={item.id} item={item} />
+            {userOrders.map((order) => (
+              <OrderListItem key={order._id} order={order} />
             ))}
           </div>
         ) : (

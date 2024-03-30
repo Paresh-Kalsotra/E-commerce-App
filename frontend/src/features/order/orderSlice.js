@@ -37,6 +37,7 @@ export const getOrders = createAsyncThunk("order/getOrders", async () => {
     });
 
     const res = await response.json();
+
     return res;
   } catch (error) {
     console.log("Error: ", error);
@@ -44,14 +45,16 @@ export const getOrders = createAsyncThunk("order/getOrders", async () => {
 });
 
 export const orderSlice = createSlice({
-  name: "orders",
-  initialState: [],
+  name: "order",
+
+  initialState: { userOrders: [] },
 
   extraReducers: (builder) => {
     builder.addCase(placeOrder.fulfilled, (state, action) => {
       return action.payload;
     });
     builder.addCase(getOrders.fulfilled, (state, action) => {
+      // state.userOrders = [...action.payload];
       return action.payload;
     });
   },

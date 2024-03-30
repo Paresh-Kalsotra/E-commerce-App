@@ -17,7 +17,7 @@ const CartPage = () => {
       totalPrice += item.price * item.count;
     });
     setTotal(totalPrice);
-    //--------later also populate cartitems from server
+    //-------also populate cartitems from server
 
     //-----------sending cartitems to server
     dispatch(sendCartItems(cartItems));
@@ -28,6 +28,8 @@ const CartPage = () => {
     if (confirmed) {
       const { payload } = await dispatch(placeOrder(cartItems));
       setMessage(payload.message);
+    } else {
+      setMessage("");
     }
   }
 
@@ -39,6 +41,7 @@ const CartPage = () => {
           color: "#f0f0f0",
           textAlign: "center",
           padding: "10px",
+          marginTop: "0",
         }}
       >
         Your Cart
@@ -53,6 +56,7 @@ const CartPage = () => {
               <h3>Summary</h3>
               <p style={{ margin: "5px" }}>Total = ₹{total}</p>
               <button onClick={handlePlaceOrder}>Order</button>
+
               <p className="message">{message}</p>
             </div>
           </div>

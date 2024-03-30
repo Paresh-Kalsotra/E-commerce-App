@@ -18,7 +18,7 @@ export const sendCartItems = createAsyncThunk(
       });
 
       const res = await response.json();
-      console.log(res);
+      return res;
     } catch (error) {
       console.log("Error: ", error);
     }
