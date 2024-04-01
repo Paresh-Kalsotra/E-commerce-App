@@ -2,6 +2,27 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const server_uri = import.meta.env.VITE_SERVER_URI;
 
+//--- get all  cart items
+export const getCartItems = createAsyncThunk("cart/getCartItems", async () => {
+  try {
+    let userID = localStorage.getItem("userID");
+    const response = await fetch(server_uri + "/api/cart/" + userID, {
+      method: "GET",
+      headers: {
+        "Auth-Token": localStorage.getItem("userToken"),
+        "Content-Type": "application/json",
+      },
+    });
+
+    const res = await response.json();
+
+    return res;
+  } catch (error) {
+    console.log("Error: ", error);
+    return { message: error.message };
+  }
+});
+
 //---------------------------------
 export const sendCartItems = createAsyncThunk(
   "cart/sendCartItems",
@@ -16,15 +37,13 @@ export const sendCartItems = createAsyncThunk(
         },
         body: JSON.stringify({ cart: cart }),
       });
-
       const res = await response.json();
-      return res;
+      // console.log(res)
     } catch (error) {
       console.log("Error: ", error);
     }
   }
 );
-// another thunk to be added to get fetch cart items once on app load
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -66,9 +85,22 @@ export const cartSlice = createSlice({
       const itemId = action.payload;
       state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
     },
+    emptyCart: (state, action) => {
+      state.cartItems = [];
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getCartItems.fulfilled, (state, action) => {
+      let message = action.payload.message;
+      let cart = action.payload.cart;
+      if (cart) {
+        state.cartItems = [...cart];
+      }
+    });
   },
 });
 
-export const { addItem, decreaseCount, deleteItem } = cartSlice.actions;
+export const { addItem, decreaseCount, deleteItem, emptyCart } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

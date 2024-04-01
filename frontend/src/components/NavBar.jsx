@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { IoCart, IoHome } from "react-icons/io5";
+import { IoCart, IoHome, IoHeart } from "react-icons/io5";
 import { BsCardChecklist } from "react-icons/bs";
 
 function Navbar() {
@@ -13,6 +13,10 @@ function Navbar() {
         <NavLink to="/home">
           <IoHome />
         </NavLink>
+        <NavLink to="/wishlist">
+          <IoHeart />
+        </NavLink>
+
         <NavLink to="/cart">
           <IoCart />
         </NavLink>

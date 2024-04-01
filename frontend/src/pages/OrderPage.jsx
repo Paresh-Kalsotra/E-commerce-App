@@ -2,19 +2,30 @@ import React, { useEffect, useState } from "react";
 import { getOrders } from "../features/order/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import OrderListItem from "../components/OrderListItem";
+import { useNavigate } from "react-router-dom";
 
 const OrderPage = () => {
-  // const userOrders = useSelector((state) => state.order.userOrders);
-  const [userOrders, setUserOrders] = useState([]);
+  const userOrders = useSelector((state) => state.order.userOrders);
+  const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchOrders();
   }, []);
 
   async function fetchOrders() {
-    const { payload } = await dispatch(getOrders());
-    setUserOrders(payload);
+    let { payload } = await dispatch(getOrders());
+
+    if (payload.message) {
+      if (payload.message === "Unauthorised") {
+        alert("You are not authorised. Please login again");
+        navigate("/");
+      }
+      setMessage(payload.message);
+    } else {
+      setMessage("");
+    }
   }
 
   return (
@@ -44,8 +55,14 @@ const OrderPage = () => {
               padding: "100px",
             }}
           >
-            <p>No orders yet.</p>
-            <p>Explore our products and start shopping!</p>
+            {message ? (
+              <p>{message}</p>
+            ) : (
+              <>
+                <p>No orders yet.</p>
+                <p>Explore our products and start shopping!</p>
+              </>
+            )}
           </div>
         )}
       </div>

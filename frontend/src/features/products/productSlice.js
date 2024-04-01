@@ -14,13 +14,29 @@ export const getProduct = createAsyncThunk(
   }
 );
 
+export const searchProduct = createAsyncThunk(
+  "products/searchProduct",
+  async (search) => {
+    try {
+      const response = await fetch(
+        server_uri + "/api/products/search/" + search
+      );
+      return await response.json();
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }
+);
+
 export const productSlice = createSlice({
   name: "products",
-  initialState: [],
+  initialState: { searchedProducts: [] },
 
   extraReducers: (builder) => {
-    builder.addCase(getProduct.fulfilled, (state, action) => {
-      return action.payload;
+    builder.addCase(searchProduct.fulfilled, (state, action) => {
+      if (action.payload.length !== -1) {
+        state.searchedProducts = [...action.payload];
+      }
     });
   },
 });

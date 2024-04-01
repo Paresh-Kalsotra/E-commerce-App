@@ -5,7 +5,7 @@ import { getProduct } from "../features/products/productSlice";
 
 const CategoryContainer = ({ category }) => {
   const dispatch = useDispatch();
-  const [products, setProducts] = useState([]);
+  const [productlist, setProductlist] = useState([]);
 
   useEffect(() => {
     fetchProducts();
@@ -13,15 +13,17 @@ const CategoryContainer = ({ category }) => {
 
   async function fetchProducts() {
     const { payload } = await dispatch(getProduct(category));
-    setProducts(payload);
+    setProductlist(payload);
   }
 
   return (
     <div style={{ marginBottom: "10px", borderBottom: "1px solid #ccc" }}>
       <h2 style={{ marginBottom: "20px" }}>Trending {category}</h2>
       <div style={{ display: "flex", gap: "20px", overflow: "scroll" }}>
-        {products && products.length ? (
-          products.map((item) => <ProductCard key={item.id} product={item} />)
+        {productlist && productlist.length ? (
+          productlist.map((item) => (
+            <ProductCard key={item.id} product={item} />
+          ))
         ) : (
           <p>Loading Products...</p>
         )}

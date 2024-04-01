@@ -3,31 +3,46 @@ import { useDispatch, useSelector } from "react-redux";
 import CartItemCard from "../components/CartItemCard";
 import { sendCartItems } from "../features/cart/cartSlice";
 import { placeOrder } from "../features/order/orderSlice";
+import { useNavigate } from "react-router-dom";
+import { emptyCart } from "../features/cart/cartSlice";
 
 const CartPage = () => {
-  const [message, setMessage] = useState("");
   const cartItems = useSelector((state) => state.cart.cartItems);
+
   const [total, setTotal] = useState(0);
+  const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMessage("");
+
     let totalPrice = 0;
     cartItems.forEach((item) => {
       totalPrice += item.price * item.count;
     });
     setTotal(totalPrice);
-    //-------also populate cartitems from server
-
-    //-----------sending cartitems to server
+    //--------sending updated cart to server
     dispatch(sendCartItems(cartItems));
   }, [cartItems]);
 
+  //---------------handling place order
   async function handlePlaceOrder() {
     const confirmed = window.confirm("Please confirm your order.");
     if (confirmed) {
-      const { payload } = await dispatch(placeOrder(cartItems));
-      setMessage(payload.message);
+      let { payload } = await dispatch(placeOrder(cartItems));
+
+      if (payload.message === "Unauthorised") {
+        alert("You are not authorised. Please login again");
+        navigate("/");
+      } else {
+        setMessage(payload.message);
+
+        //emptying cart
+        setTimeout(() => {
+          dispatch(emptyCart([]));
+        }, 2000);
+      }
     } else {
       setMessage("");
     }
@@ -46,7 +61,7 @@ const CartPage = () => {
       >
         Your Cart
       </h3>
-      <div className="cartItem">
+      <div>
         {cartItems && cartItems.length > 0 ? (
           <div>
             {cartItems.map((item) => (

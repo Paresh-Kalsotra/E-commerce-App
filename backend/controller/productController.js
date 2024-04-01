@@ -14,10 +14,11 @@ async function getProductsByCategory(req, res) {
 async function searchProducts(req, res) {
   try {
     const searchString = req.params.searchString;
+
     const products = await product.find({
       $or: [
-        { title: { $regex: searchString, $options: "i" } },
-        { category: { $regex: searchString, $options: "i" } },
+        { title: { $regex: `^${searchString}`, $options: "i" } },
+        { category: { $regex: `^${searchString}`, $options: "i" } },
       ],
     });
     res.status(200).json(products);

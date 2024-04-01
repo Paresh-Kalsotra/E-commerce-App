@@ -21,6 +21,7 @@ export const placeOrder = createAsyncThunk(
       return res;
     } catch (error) {
       console.log("Error: ", error);
+      return { message: error.message };
     }
   }
 );
@@ -41,21 +42,31 @@ export const getOrders = createAsyncThunk("order/getOrders", async () => {
     return res;
   } catch (error) {
     console.log("Error: ", error);
+    return { message: error.message };
   }
 });
 
 export const orderSlice = createSlice({
   name: "order",
 
-  initialState: { userOrders: [] },
+  initialState: { userOrders: [], orderMsg: "" },
 
   extraReducers: (builder) => {
     builder.addCase(placeOrder.fulfilled, (state, action) => {
-      return action.payload;
+      let message = action.payload.message;
+      if (message) {
+        state.orderMsg = message;
+      }
     });
     builder.addCase(getOrders.fulfilled, (state, action) => {
-      // state.userOrders = [...action.payload];
-      return action.payload;
+      let message = action.payload.message;
+      let orders = action.payload.orders;
+      if (orders) {
+        state.userOrders = [...orders];
+      }
+      if (message) {
+        state.orderMsg = message;
+      }
     });
   },
 });

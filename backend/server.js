@@ -3,13 +3,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-const userRouter = require("./router/userRouter");
-const productRouter = require(`./router/productRouter`);
-const cartRouter = require("./router/cartRouter");
-const orderRouter = require(`./router/orderRouter`);
 const verifyToken = require("./middleware/tokenCheck");
+const routers = require("./routers");
 
-const app = express();
+const server = express();
 const PORT = 8000;
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -24,19 +21,19 @@ mongoose
   });
 
 //-----middlewares
-app.use(express.json());
+server.use(express.json());
 
-app.use(cors());
+server.use(cors());
 
 //------routers
 
-app.use("/api/users", userRouter);
-app.use("/api/products", productRouter);
-app.use("/api/cart", verifyToken, cartRouter);
-app.use("/api/orders", verifyToken, orderRouter);
+server.use("/api/users", routers.userRouter);
+server.use("/api/products", routers.productRouter);
+server.use("/api/cart", verifyToken, routers.cartRouter);
+server.use("/api/orders", verifyToken, routers.orderRouter);
 
-//app.use("api/seller", sellerRouter);
+//server.use("api/seller", sellerRouter);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`server listening at port ${PORT}`);
 });

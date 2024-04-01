@@ -8,17 +8,12 @@ import CartPage from "./pages/CartPage";
 import Orderpage from "./pages/OrderPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Navbar from "./components/NavBar";
+import WishlistPage from "./pages/WishlistPage";
 
 const route = [
   { path: "/", element: <LoginPage /> },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/signup",
-    element: <SignupPage />,
-  },
+  { path: "/login", element: <LoginPage /> },
+  { path: "/signup", element: <SignupPage /> },
   {
     path: "/",
     element: (
@@ -28,22 +23,14 @@ const route = [
       </div>
     ),
     children: [
-      {
-        path: "/home",
-        element: <HomePage />,
-      },
-      {
-        path: "/cart",
-        element: <CartPage />,
-      },
+      { path: "/home", element: <HomePage /> },
+      { path: "/wishlist", element: <WishlistPage /> },
+      { path: "/cart", element: <CartPage /> },
       { path: "/orders", element: <Orderpage /> },
     ],
   },
 
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
+  { path: "*", element: <NotFoundPage /> },
 ];
 
 const router = createBrowserRouter(route);

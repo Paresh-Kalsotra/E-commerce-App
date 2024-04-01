@@ -1,21 +1,15 @@
 import React, { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { addItem } from "../features/cart/cartSlice";
+import { FaMinusCircle } from "react-icons/fa";
 import { useDispatch } from "react-redux";
+import { addItem } from "../features/cart/cartSlice";
 import { updateWishlist } from "../features/wishlist/wishlistSlice";
-import { useSelector } from "react-redux";
 
-const ProductCard = ({ product }) => {
+const WishlistCard = ({ product }) => {
   const [cardmsg, setCardmsg] = useState("");
-  const wishlist = useSelector((state) => state.wishlist.wishlistItems);
   const dispatch = useDispatch();
 
-  let isPresent = false;
-  isPresent = wishlist.some((item) => item.id === product.id);
-
-  async function addtoCart() {
-    await dispatch(addItem(product));
-
+  function addtoCart() {
+    dispatch(addItem(product));
     setCardmsg("Added to cart!");
     setTimeout(() => {
       setCardmsg("");
@@ -27,7 +21,7 @@ const ProductCard = ({ product }) => {
   }
 
   return (
-    <div className="product-card">
+    <div className="wishlist-card">
       <img
         src={product.images[0]}
         width={200}
@@ -44,15 +38,20 @@ const ProductCard = ({ product }) => {
           justifyContent: "space-between",
         }}
       >
+        {" "}
         <div style={{ display: "flex", fontWeight: "bold" }}>
           <p>{product.title}</p>
-          <button className="wishlist-btn" onClick={wishlistbtn}>
-            {isPresent ? <FaHeart /> : <FaRegHeart />}
+          <button
+            className="wishlist-btn"
+            onClick={wishlistbtn}
+            style={{ color: "red" }}
+          >
+            <FaMinusCircle />
           </button>
         </div>
         <p>Rating:{product.rating}/5</p>
         <p>Price:₹{product.price * 100}</p>
-        <button onClick={addtoCart}>Add To Cart</button>
+        <button onClick={addtoCart}>Add To Cart</button>{" "}
         <p className="message" style={{ color: "green" }}>
           {cardmsg}
         </p>
@@ -61,4 +60,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default WishlistCard;

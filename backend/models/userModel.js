@@ -17,7 +17,7 @@ const userSchema = new Schema({
     required: true,
   },
   cart: { type: Array, default: [] },
-  orders: { type: Array, default: [] },
+  wishlist: { type: Array, default: [] },
 });
 
 const userModel = model("user", userSchema);
