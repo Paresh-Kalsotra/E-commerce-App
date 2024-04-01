@@ -19,9 +19,9 @@ const MainDecisionPage = () => {
 
   return (
     <div>
-      <h1 style={{ textAlign: "center", marginTop: "20vh" }}>
-        Wlecome to E-commerce App Manager
-      </h1>
+      <h2 style={{ textAlign: "center", marginTop: "20vh" }}>
+        Welcome to E-commerce App Manager
+      </h2>
       <h3 style={{ textAlign: "center" }}> Please select your role:</h3>
       <div
         className="box"
