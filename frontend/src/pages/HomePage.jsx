@@ -4,6 +4,7 @@ import CategoryContainer from "../components/CategoryContainer";
 import { useDispatch } from "react-redux";
 import { getOrders } from "../features/order/orderSlice";
 import { getCartItems } from "../features/cart/cartSlice";
+import { getWishlist } from "../features/wishlist/wishlistSlice";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -18,13 +19,13 @@ const HomePage = () => {
 
   //fetching user data(orders,cart,wishlist )from server
   useEffect(() => {
-    mountFetch();
+    Fetch();
   }, []);
 
-  async function mountFetch() {
+  async function Fetch() {
     await dispatch(getOrders());
     await dispatch(getCartItems());
-    // await dispatch(getWishlist())
+    await dispatch(getWishlist());
   }
 
   return (

@@ -2,6 +2,7 @@ import React, { useReducer, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { loginUser } from "../features/user/userRegisterSlice";
+import { useSelector } from "react-redux";
 
 const initialState = {
   email: "",
@@ -19,6 +20,7 @@ const reducer = (loginState, action) => {
 
 function LoginPage() {
   const [loginState, dispatch] = useReducer(reducer, initialState);
+  const userRole = useSelector((state) => state.userRegister.role);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const dispatcher = useDispatch();
@@ -32,10 +34,13 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { payload } = await dispatcher(loginUser(loginState));
+    const { payload } = await dispatcher(
+      loginUser({ data: loginState, role: userRole })
+    );
 
-    if (payload.message === "User Authenticated") {
-      navigate("/home");
+    if (payload.message === "Authenticated") {
+      if (userRole == "customer") navigate("/home");
+      if (userRole == "seller") navigate("/seller/home");
     } else {
       setMessage(payload.message);
     }
@@ -46,7 +51,7 @@ function LoginPage() {
       <h1 style={{ textAlign: "center", marginTop: "10vh", color: "#0364cb" }}>
         Welcome!
       </h1>
-      <div className="register-box">
+      <div className="box">
         <h1>Login </h1>
         <form onSubmit={handleSubmit}>
           <input

@@ -16,8 +16,8 @@ const WishlistCard = ({ product }) => {
     }, 5000);
   }
 
-  function wishlistbtn() {
-    dispatch(updateWishlist(product));
+  async function wishlistbtn() {
+    await dispatch(updateWishlist(product));
   }
 
   return (

@@ -7,8 +7,8 @@ body {
   font-family: Helvetica, sans-serif;
 }
 
-.register-box {
-  max-width: 250px;
+.box {
+  width: 250px;
   margin-inline: auto;
   background-color: #f0f0f0;
   padding: 20px;
@@ -17,6 +17,14 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   text-align: center;
 }
+
+.form {
+  width: 500px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
 ::-webkit-scrollbar {
   width: 0;
 }
@@ -29,10 +37,11 @@ input {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-
   border: 1px solid #ccc;
 }
-
+label {
+  margin-top: 5px;
+}
 button {
   background-color: #0364cb;
   color: #f0f0f0;
@@ -75,7 +84,8 @@ nav a {
 .product-card {
   display: flex;
   border-radius: 5px;
-  background-color: white;
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   padding: 20px;
   border: 1px solid #0364cb;
 }

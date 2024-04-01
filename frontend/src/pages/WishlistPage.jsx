@@ -1,9 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import WishlistCard from "../components/WishlistCard";
+import { sendWishlist } from "../features/wishlist/wishlistSlice";
+import { useEffect } from "react";
 
 const WishlistPage = () => {
   const wishlist = useSelector((state) => state.wishlist.wishlistItems);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(sendWishlist(wishlist));
+  }, [wishlist]);
 
   return (
     <div>

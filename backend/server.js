@@ -27,12 +27,13 @@ server.use(cors());
 
 //------routers
 
-server.use("/api/users", routers.userRouter);
-server.use("/api/products", routers.productRouter);
-server.use("/api/cart", verifyToken, routers.cartRouter);
-server.use("/api/orders", verifyToken, routers.orderRouter);
+server.use("/api/users/", routers.userRouter);
+server.use("/api/products/", routers.productRouter);
+server.use("/api/cart/", verifyToken, routers.cartRouter);
+server.use("/api/orders/", verifyToken, routers.orderRouter);
+server.use("/api/wishlist/", verifyToken, routers.wishlistRouter);
 
-//server.use("api/seller", sellerRouter);
+server.use("/api/sellers/", routers.sellerRouter);
 
 server.listen(PORT, () => {
   console.log(`server listening at port ${PORT}`);

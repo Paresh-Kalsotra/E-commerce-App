@@ -35,7 +35,14 @@ const SearchComponent = () => {
       {products.length > 0 ? (
         <>
           <h3 style={{ textAlign: "left" }}>Top Matches for your search:</h3>
-          <div style={{ display: "flex", gap: "20px", overflow: "scroll" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "20px",
+              overflow: "scroll",
+              paddingBottom: "10px",
+            }}
+          >
             {products.map((item) => (
               <ProductCard key={item.id} product={item} />
             ))}

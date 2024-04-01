@@ -1,5 +1,4 @@
 const order = require("../models/orderModel");
-const user = require("../models/userModel.js");
 
 //function to get userOrders by category
 async function placeOrder(req, res) {
@@ -33,4 +32,38 @@ async function getOrdersByUserId(req, res) {
   }
 }
 
-module.exports = { placeOrder, getOrdersByUserId };
+async function getOrdersForSeller(req, res) {
+  let sellerID = req.params.sellerID;
+
+  try {
+    const orders = await order.aggregate([
+      {
+        $match: {
+          items: {
+            $elemMatch: { sellerId: sellerID },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          userId: 1,
+          items: {
+            $filter: {
+              input: "$items",
+              as: "item",
+              cond: { $eq: ["$$item.sellerId", sellerID] },
+            },
+          },
+        },
+      },
+    ]);
+
+    res.status(200).json({ orders: orders });
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+module.exports = { placeOrder, getOrdersByUserId, getOrdersForSeller };

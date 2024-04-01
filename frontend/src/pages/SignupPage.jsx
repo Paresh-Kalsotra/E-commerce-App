@@ -2,6 +2,7 @@ import React, { useReducer, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { signupUser } from "../features/user/userRegisterSlice";
+import { useSelector } from "react-redux";
 
 const initialState = {
   userName: "",
@@ -21,6 +22,8 @@ const reducer = (signupState, action) => {
 
 function SignupPage() {
   const [signupState, dispatch] = useReducer(reducer, initialState);
+
+  const userRole = useSelector((state) => state.userRegister.role);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const dispatcher = useDispatch();
@@ -38,10 +41,13 @@ function SignupPage() {
       return setMessage("Passwords do not match");
     }
 
-    const { payload } = await dispatcher(signupUser(signupState));
+    const { payload } = await dispatcher(
+      signupUser({ data: signupState, role: userRole })
+    );
 
-    if (payload.message === "User Authenticated") {
-      return navigate("/home");
+    if (payload.message === "Authenticated") {
+      if (userRole == "customer") navigate("/home");
+      if (userRole == "seller") navigate("/seller/home");
     }
     setMessage(payload.message);
   };
@@ -51,7 +57,7 @@ function SignupPage() {
       <h1 style={{ textAlign: "center", marginTop: "10vh", color: "#0364cb" }}>
         Welcome!
       </h1>
-      <div className="register-box">
+      <div className="box">
         <h1>Sign Up </h1>
 
         <form onSubmit={handleSubmit}>
@@ -90,6 +96,7 @@ function SignupPage() {
             required
           />
           <br />
+
           <button type="submit">Submit</button>
         </form>
 

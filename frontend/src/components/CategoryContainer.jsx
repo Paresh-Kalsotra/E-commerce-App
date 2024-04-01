@@ -19,7 +19,14 @@ const CategoryContainer = ({ category }) => {
   return (
     <div style={{ marginBottom: "10px", borderBottom: "1px solid #ccc" }}>
       <h2 style={{ marginBottom: "20px" }}>Trending {category}</h2>
-      <div style={{ display: "flex", gap: "20px", overflow: "scroll" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "20px",
+          overflow: "scroll",
+          paddingBottom: "10px",
+        }}
+      >
         {productlist && productlist.length ? (
           productlist.map((item) => (
             <ProductCard key={item.id} product={item} />

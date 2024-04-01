@@ -1,38 +1,38 @@
-const user = require("../models/userModel.js");
+const seller = require("../models/sellerModel.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // ----------------------------------------------------------------
-//function to sign  up a new user
-async function signupUser(req, res) {
+//function to sign  up a new seller
+async function signupSeller(req, res) {
   try {
-    let existingUser = await user.find({ email: req.body.email });
+    let existingSeller = await seller.find({ email: req.body.email });
 
-    if (existingUser.length >= 1) {
-      return res.status(422).json({ message: "User Already Exits" });
+    if (existingSeller.length >= 1) {
+      return res.status(422).json({ message: "Seller Already Exits" });
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    // Creating a new user
-    const newUser = new user({
-      userName: req.body.userName,
+    // Creating a new seller
+    const newSeller = new seller({
+      sellerName: req.body.userName,
       email: req.body.email,
       password: hashedPassword,
     });
-    await newUser.save();
+    await newSeller.save();
 
     //jwt token generation
-    const token = jwt.sign({ email: newUser.email }, process.env.jwt_key);
+    const token = jwt.sign({ email: newSeller.email }, process.env.jwt_key);
 
     res.status(200).json({
       userToken: token,
-      userID: newUser._id,
+      userID: newSeller._id,
       message: "Authenticated",
     });
   } catch (err) {
-    if (err._message === "user validation failed") {
+    if (err._message === "seller validation failed") {
       return res.status(422).json({ mesage: "Enter a valid email" });
     }
     console.log(err);
@@ -41,20 +41,20 @@ async function signupUser(req, res) {
 }
 
 // ----------------------------------------------------------------
-//function to login a user
-async function loginUser(req, res) {
-  let existingUser = await user.find({ email: req.body.email });
+//function to login a seller
+async function loginSeller(req, res) {
+  let existingSeller = await seller.find({ email: req.body.email });
 
-  //checking for null //can check for only one or multiple user with same email
-  if (existingUser.length !== 1) {
+  //checking for null //can check for only one or multiple seller with same email
+  if (existingSeller.length !== 1) {
     return res
       .status(404)
-      .json({ message: "User doesn't exist, Please Signup!" });
+      .json({ message: "Seller doesn't exist, Please Signup!" });
   }
   try {
     bcrypt.compare(
       req.body.password,
-      existingUser[0].password,
+      existingSeller[0].password,
       (err, result) => {
         if (err) {
           console.log(err);
@@ -70,7 +70,7 @@ async function loginUser(req, res) {
 
         //jwt token generation
         const token = jwt.sign(
-          { email: existingUser[0].email },
+          { email: existingSeller[0].email },
           process.env.jwt_key,
           {
             expiresIn: "5h",
@@ -79,7 +79,7 @@ async function loginUser(req, res) {
 
         res.status(200).json({
           userToken: token,
-          userID: existingUser[0]._id,
+          userID: existingSeller[0]._id,
           message: "Authenticated",
         });
       }
@@ -90,4 +90,4 @@ async function loginUser(req, res) {
   }
 }
 
-module.exports = { signupUser, loginUser };
+module.exports = { signupSeller, loginSeller };

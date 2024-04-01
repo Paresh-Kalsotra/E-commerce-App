@@ -22,8 +22,8 @@ const ProductCard = ({ product }) => {
     }, 5000);
   }
 
-  function wishlistbtn() {
-    dispatch(updateWishlist(product));
+  async function wishlistbtn() {
+    await dispatch(updateWishlist(product));
   }
 
   return (
@@ -51,7 +51,7 @@ const ProductCard = ({ product }) => {
           </button>
         </div>
         <p>Rating:{product.rating}/5</p>
-        <p>Price:₹{product.price * 100}</p>
+        <p>Price:₹{product.price}</p>
         <button onClick={addtoCart}>Add To Cart</button>
         <p className="message" style={{ color: "green" }}>
           {cardmsg}
