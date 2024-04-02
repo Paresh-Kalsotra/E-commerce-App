@@ -2,6 +2,7 @@ import React from "react";
 import SellerNavbar from "../components/SellerNavbar";
 import { useSelector } from "react-redux";
 import SellerOrderCard from "../components/SellerOrderCard";
+import OrderListItem from "../components/OrderListItem";
 
 const SellerOrdersPage = () => {
   const sellerOrders = useSelector((state) => state.seller.sellerOrders);
@@ -13,7 +14,7 @@ const SellerOrdersPage = () => {
       {sellerOrders && sellerOrders.length > 0 ? (
         <div>
           {sellerOrders.map((order) => (
-            <SellerOrderCard key={order._id} order={order} />
+            <OrderListItem key={order._id} order={order} />
           ))}
         </div>
       ) : (

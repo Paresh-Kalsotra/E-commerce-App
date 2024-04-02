@@ -100,6 +100,15 @@ const SellerProductPage = () => {
           onChange={handleChange}
           required
         />
+        <label htmlFor="rating">Rating(out of 5) : </label>
+        <input
+          type="number"
+          id="rating"
+          name="rating"
+          value={formState.rating}
+          onChange={handleChange}
+          required
+        />
 
         <label htmlFor="discountPercentage">Discount Percentage:</label>
         <input
@@ -107,15 +116,6 @@ const SellerProductPage = () => {
           id="discountPercentage"
           name="discountPercentage"
           value={formState.discountPercentage}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="rating">Rating:</label>
-        <input
-          type="number"
-          id="rating"
-          name="rating"
-          value={formState.rating}
           onChange={handleChange}
         />
 

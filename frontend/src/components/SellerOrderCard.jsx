@@ -1,6 +1,6 @@
 import React from "react";
 
-const SellerOrderCard = (prop) => {
+const SellerOrderCard = ({ order }) => {
   return (
     <div
       style={{
