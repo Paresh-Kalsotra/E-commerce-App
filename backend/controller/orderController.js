@@ -39,22 +39,7 @@ async function getOrdersForSeller(req, res) {
     const orders = await order.aggregate([
       {
         $match: {
-          items: {
-            $elemMatch: { sellerId: sellerID },
-          },
-        },
-      },
-      {
-        $project: {
-          _id: 1,
-          userId: 1,
-          items: {
-            $filter: {
-              input: "$items",
-              as: "item",
-              cond: { $eq: ["$$item.sellerId", sellerID] },
-            },
-          },
+          "items.sellerID": sellerID,
         },
       },
     ]);

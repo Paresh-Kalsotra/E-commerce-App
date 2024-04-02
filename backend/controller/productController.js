@@ -48,6 +48,7 @@ async function addProduct(req, res) {
       ...req.body,
       images: [req.body.images || "https://via.placeholder.com/300x200"],
       sellerID: sellerID,
+      id: new ObjectID(),
     };
     const product = await productModel.create(newProduct);
     res.status(201).json(product);
